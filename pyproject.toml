@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "molsets"
+version = "1.0"
+description = "Molecular Sets (MOSES): A Benchmarking Platform for Molecular Generation Models"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.5.0"
+authors = [
+    { name = "Insilico Medicine", email = "moses@insilico.com" },
+]
+dependencies = [
+    "tqdm>=4.26.0",
+    "matplotlib>=3.0.0",
+    "numpy>=1.15",
+    "pandas>=0.25",
+    "scipy>=1.1.0",
+    "torch>=1.1.0",
+    "fcd_torch>=1.0.5",
+    "seaborn>=0.9.0",
+    "pomegranate",
+]
+
+[tool.setuptools.packages.find]
+include = ["moses*"]
+
+[tool.setuptools.package-data]
+# Replicates the original `package_data={'': ['*.csv', '*.h5', '*.gz', '*.csv.gz', '*.npz']}`
+# which applied the same globs to every package.
+"moses" = ["*.csv", "*.h5", "*.gz", "*.csv.gz", "*.npz"]
+"moses.metrics" = ["*.csv", "*.h5", "*.gz", "*.csv.gz", "*.npz"]
+"moses.metrics.SA_Score" = ["*.csv", "*.h5", "*.gz", "*.csv.gz", "*.npz"]
+"moses.metrics.NP_Score" = ["*.csv", "*.h5", "*.gz", "*.csv.gz", "*.npz"]
+# moses/dataset/data has no __init__.py, so it is not a package; ship its
+# files as data of the moses.dataset package (was previously listed explicitly
+# in `packages` together with the package_data globs above).
+"moses.dataset" = [
+    "data/*.csv",
+    "data/*.h5",
+    "data/*.gz",
+    "data/*.csv.gz",
+    "data/*.npz",
+]
