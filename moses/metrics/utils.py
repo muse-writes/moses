@@ -8,7 +8,7 @@ import torch
 from rdkit import Chem
 from rdkit.Chem import AllChem
 from rdkit.Chem import MACCSkeys
-from rdkit.Chem.AllChem import GetMorganFingerprintAsBitVect as Morgan
+from rdkit.Chem.rdFingerprintGenerator import GetMorganGenerator
 from rdkit.Chem.QED import qed
 from rdkit.Chem.Scaffolds import MurckoScaffold
 from rdkit.Chem import Descriptors
@@ -182,8 +182,9 @@ def fingerprint(smiles_or_mol, fp_type='maccs', dtype=None, morgan__r=2,
         if len(keys) != 0:
             fingerprint[keys - 1] = 1  # We drop 0-th key that is always zero
     elif fp_type == 'morgan':
-        fingerprint = np.asarray(Morgan(molecule, morgan__r, nBits=morgan__n),
-                                 dtype='uint8')
+        fingerprint = np.asarray(GetMorganGenerator(
+            radius=morgan__r, fpSize=morgan__n).GetFingerprint(molecule),
+            dtype='uint8')
     else:
         raise ValueError("Unknown fingerprint type {}".format(fp_type))
     if dtype is not None:

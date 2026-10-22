@@ -24,6 +24,7 @@ import pickle
 
 from rdkit import Chem
 from rdkit.Chem import rdMolDescriptors
+from rdkit.Chem.rdFingerprintGenerator import GetMorganGenerator
 
 _fscores = None
 
@@ -53,9 +54,9 @@ def calculateScore(m):
         readFragmentScores()
 
     # fragment score
-    fp = rdMolDescriptors.GetMorganFingerprint(
-        m, 2  # <- 2 is the *radius* of the circular fingerprint
-    )
+    fp = GetMorganGenerator(
+        radius=2  # <- 2 is the *radius* of the circular fingerprint
+    ).GetSparseCountFingerprint(m)
     fps = fp.GetNonzeroElements()
     score1 = 0.
     nf = 0

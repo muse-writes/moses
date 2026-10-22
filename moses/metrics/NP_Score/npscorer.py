@@ -22,7 +22,7 @@ import pickle
 import os.path
 from collections import namedtuple
 from rdkit import Chem
-from rdkit.Chem import rdMolDescriptors
+from rdkit.Chem.rdFingerprintGenerator import GetMorganGenerator
 
 
 _fscores = None
@@ -46,7 +46,7 @@ def scoreMolWConfidence(mol, fscore):
 
     if mol is None:
         raise ValueError('invalid molecule')
-    fp = rdMolDescriptors.GetMorganFingerprint(mol, 2)
+    fp = GetMorganGenerator(radius=2).GetSparseCountFingerprint(mol)
     bits = fp.GetNonzeroElements()
 
     # calculating the score
